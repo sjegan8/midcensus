@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%);
-            --card-bg: rgba(255, 255, 255, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.6);
             --text-main: #1a4f8b;
             --text-sub: #4a4a4a;
             --accent: #d37526;
@@ -15,7 +15,7 @@
 
         .dark-mode {
             --bg-gradient: linear-gradient(135deg, #2c3e50 0%, #000000 100%);
-            --card-bg: rgba(0, 0, 0, 0.6);
+            --card-bg: rgba(0, 0, 0, 0.7);
             --text-main: #6eb5ff;
             --text-sub: #cfcfcf;
             --accent: #ff9f43;
@@ -26,26 +26,28 @@
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background: var(--bg-gradient);
-            height: 100vh;
+            min-height: 100vh; /* Changed from height to min-height */
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden; /* Only hide horizontal scroll */
+            padding: 20px 0; /* Add padding for small screens */
         }
 
-        /* Dark Mode Toggle at Top Right */
+        /* Dark Mode Toggle */
         .theme-switch {
             position: absolute;
-            top: 40px;
+            top: 25px;
             right: 25px;
             cursor: pointer;
             font-size: 24px;
-            z-index: 10;
+            z-index: 100;
         }
 
         .glass-card {
-            width: 375px;
-            height: 812px;
+            width: 90%;
+            max-width: 375px;
+            min-height: 700px; /* Allow card to grow but have a base height */
             background: var(--card-bg);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -55,115 +57,114 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 70px 30px;
+            padding: 50px 25px;
             text-align: center;
             position: relative;
+            margin: auto;
         }
 
         .logo-container {
-            width: 85px; height: 85px;
+            width: 80px; height: 80px;
             background: white;
             border-radius: 50%;
             display: flex; justify-content: center; align-items: center;
             margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .logo-img { width: 60px; }
+        .logo-img { width: 55px; }
 
         .hospital-label {
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
             color: var(--text-sub);
             text-transform: uppercase;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        /* Centered Margin for Text Content */
         .content-group {
-            margin: 0 auto;
-            max-width: 95%;
+            width: 100%;
+            flex-grow: 1; /* Pushes footer down */
         }
 
         h1 {
             color: var(--text-main);
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 800;
             text-transform: uppercase;
-            line-height: 1.1;
-            margin-bottom: 25px;
+            line-height: 1.2;
+            margin-bottom: 20px;
         }
 
         .description {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-sub);
             line-height: 1.6;
-            margin-bottom: 45px;
-            padding: 0 10px;
+            margin-bottom: 35px;
+            padding: 0 5px;
         }
 
         .clock-wrapper {
             background: rgba(255, 255, 255, 0.2);
-            padding: 15px 35px;
+            padding: 15px 25px;
             border-radius: 20px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
+            display: inline-block;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
         }
-        .clock { font-size: 40px; font-weight: 300; color: var(--text-main); }
-        .ampm { font-size: 18px; font-weight: 600; color: var(--accent); margin-left: 5px; }
+        .clock { font-size: 36px; font-weight: 300; color: var(--text-main); }
+        .ampm { font-size: 16px; font-weight: 600; color: var(--accent); margin-left: 5px; }
 
-        /* Animated Get Started Button */
         .btn-premium {
             background: var(--accent);
-            color: white;
+            color: white !important;
             border: none;
-            padding: 18px 60px;
+            padding: 16px 45px;
             font-size: 18px;
             font-weight: 700;
             border-radius: 15px;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(211, 117, 38, 0.3);
             text-decoration: none;
-            transition: transform 0.2s ease;
-            animation: pulse-ring 2s infinite; /* Pulsing effect */
+            display: inline-block;
+            margin-bottom: 40px;
+            animation: pulse-ring 2s infinite;
         }
-
-        .btn-premium:active { transform: scale(0.95); }
 
         @keyframes pulse-ring {
             0% { box-shadow: 0 0 0 0 rgba(211, 117, 38, 0.6); }
-            70% { box-shadow: 0 0 0 15px rgba(211, 117, 38, 0); }
+            70% { box-shadow: 0 0 0 12px rgba(211, 117, 38, 0); }
             100% { box-shadow: 0 0 0 0 rgba(211, 117, 38, 0); }
         }
 
-        /* Screen Wipe Animation Overlay */
+        /* Screen Wipe Overlay */
         .overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background: var(--text-main);
             z-index: 9999;
-            transform: translateX(-100%);
+            transform: translateY(100%);
             transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
         }
-        .overlay.active { transform: translateX(0); }
+        .overlay.active { transform: translateY(0); }
 
         .footer {
-            position: absolute; bottom: 40px;
+            margin-top: 20px;
             font-size: 10px; color: var(--text-sub);
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
             font-weight: 600;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
     <div class="glass-card">
-        <!-- Dark Mode Toggle -->
-        <div class="theme-switch" onclick="toggleTheme()" title="Toggle Dark Mode">🌓</div>
+        <div class="theme-switch" onclick="toggleTheme()">🌓</div>
 
         <div class="logo-container">
-            <img src="https://lh3.googleusercontent.com/d/1U9JGSp3zkllJKEEbPHksSD2wRXmSxA0Z" class="logo-img" alt="Hospital Logo">
+            <img src="https://lh3.googleusercontent.com/d/1U9JGSp3zkllJKEEbPHksSD2wRXmSxA0Z" class="logo-img" alt="Logo">
         </div>
         
         <div class="hospital-label">Hospital - Your Name</div>
@@ -174,53 +175,40 @@
                 A Hospital Midnight Census Application is a tool that records the number of patients in a hospital at midnight to track occupancy and generate daily reports.
             </p>
 
-            <!-- Realtime Clock -->
             <div class="clock-wrapper">
                 <div class="clock" id="clock-display">00:00:00 <span class="ampm">AM</span></div>
             </div>
 
-            <!-- Get Started with Animation -->
+            <br>
             <a href="#" class="btn-premium" onclick="handleButtonClick(event)">GET STARTED</a>
         </div>
 
         <div class="footer">DEVELOPED BY S.JEGATHEESWARAN</div>
     </div>
 
-    <!-- Animation Overlay -->
     <div class="overlay" id="page-overlay"></div>
 
     <script>
-        // 1. Realtime Clock Logic
         function updateClock() {
             const now = new Date();
             let h = now.getHours();
             let m = String(now.getMinutes()).padStart(2, '0');
             let s = String(now.getSeconds()).padStart(2, '0');
             let ampm = h >= 12 ? 'PM' : 'AM';
-            h = h % 12 || 12; // Convert 0 to 12
-            
-            document.getElementById('clock-display').innerHTML = 
-                `${h}:${m}:${s} <span class="ampm">${ampm}</span>`;
+            h = h % 12 || 12;
+            document.getElementById('clock-display').innerHTML = `${h}:${m}:${s} <span class="ampm">${ampm}</span>`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // 2. Animated Page Transition
         function handleButtonClick(e) {
             e.preventDefault();
             const overlay = document.getElementById('page-overlay');
             const targetUrl = "https://script.google.com/macros/s/AKfycbzzR1jzt4jcZbemNAk1BGkr8jRdKCO_Qjr6IjWu4ELhF3Zg5i93GkjKq-qtHDv5UZK3mA/exec";
-
-            // Activate slide-in animation
             overlay.classList.add('active');
-
-            // Redirect after animation completes (600ms matches CSS transition)
-            setTimeout(() => {
-                window.location.href = targetUrl;
-            }, 600);
+            setTimeout(() => { window.location.href = targetUrl; }, 600);
         }
 
-        // 3. Dark Mode Toggle
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
         }
